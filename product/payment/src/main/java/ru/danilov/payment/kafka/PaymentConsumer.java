@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,8 @@ public class PaymentConsumer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @KafkaListener(topics = "new_orders", groupId = "product")
+    @KafkaListener(topicPartitions = @TopicPartition(topic = "new_orders", partitions = {"0", "1"}), groupId = "product")
+   // @KafkaListener(topics = "new_orders", groupId = "product")
     public void listen(String message) {
         System.out.println("Message " + message);
         try {
